@@ -1,0 +1,18 @@
+[submodule "modules/mda.js"]
+	path = modules/mda.js
+	url = git@github.com:YCAMInterlab/mda.js.git
+[submodule "modules/nsc.js"]
+	path = modules/nsc.js
+	url = git@github.com:YCAMInterlab/nsc.js.git
+[submodule "modules/sps.js"]
+	path = modules/sps.js
+	url = git@github.com:YCAMInterlab/sps.js.git
+[submodule "modules/guf.js"]
+	path = modules/guf.js
+	url = git@github.com:YCAMInterlab/guf.js.git
+[submodule "modules/lgp.js"]
+	path = modules/lgp.js
+	url = git@github.com:YCAMInterlab/lgp.js.git
+[submodule "modules/cga.js"]
+	path = modules/cga.js
+	url = git@github.com:YCAMInterlab/cga.js.git
