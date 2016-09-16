@@ -1,0 +1,9 @@
+{
+	"presets": ["es2015", "stage-0"],
+	"plugins":[
+		"transform-class-properties",
+		"transform-object-assign",
+		"transform-es2015-modules-umd"
+	]
+}
+
