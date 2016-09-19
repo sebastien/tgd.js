@@ -1,9 +1,9 @@
 MODULES_PATH  := modules
 YCAM_MODULES  := mda nsc sps guf lgp cga
-SUBMODULES    := $(YCAM_MODULES:%=modules/%.js)
+SUBMODULES    := $(YCAM_MODULES:%=modules/%-js)
 SUBMODULES_GIT:= $(SUBMODULES:%=%/.git)
 SOURCES_JS    := $(shell find modules/ -name "*.js" | grep -v /umd/)
-PRODUCT_JS    := $(shell find modules/ -name "*.js" | sed 's|.js/|.js/umd/|g')
+PRODUCT_JS    := $(shell find modules/ -name "*.js" | sed 's|-js/|-js/umd/|g')
 
 BUILD_REQ     := $(SUBMODULES_GIT)
 BUILD_FILES   := $(SUBMODULES:%=%/.babelrc) $(PRODUCT_JS)
@@ -50,20 +50,21 @@ help: ## Displays a description of the different Makefile rules
 #
 #  MODULES
 #
+#p
 # -----------------------------------------------------------------------------
 
 modules:
 
-modules/%.js/.git:
+modules/%-js/.git:
 	@echo "$(GREEN)«  $@ [GIT]$(RESET)"
 	@mkdir -p modules ; true
-	@test '!' -e $@ && git submodule add --force git@github.com:YCAMInterlab/$*.js.git `dirname $@`/$* ; true
+	@test '!' -e $@ && git submodule add --force git@github.com:YCAMInterlab/$*.js.git `dirname $@` ; true
 
-modules/%.js/.babelrc: .babelrc modules/%.js
+modules/%/.babelrc: .babelrc modules/%/.git
 	@echo "$(GREEN)📝  $@ [BABELRC]$(RESET)" 
 	@ln -sfr $< $@
 
-modules/%.js/umd/index.js: modules/%.js/index.js
+modules/%-js/umd/index.js: modules/%.js/index.js
 
 modules/%.js:
 	@echo "$(GREEN)📝  $@ [ES6]$(RESET)"
