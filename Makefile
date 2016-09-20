@@ -40,7 +40,8 @@ build: $(BUILD_REQ) $(BUILD_FILES) ## Builds $(PRODUCT) files
 
 clean: ## Cleans the build files
 	@echo "$(RED)♻  clean: Cleaning $(words $(BUILD_FILES) $(DIST_FILES)) files $(RESET)"
-	@echo $(PRODUCT) | xargs python -c 'import sys,os;sys.stdout.write("\n".join(_ for _ in sys.argv[1:] if os.path.exists(_)))' | xargs rm 
+	@git rm -rf modules ; true
+	@echo $(PRODUCT) | xargs python -c 'import sys,os;sys.stdout.write("\n".join(_ for _ in sys.argv[1:] if os.path.exists(_)))' | xargs rm  ; true
 
 help: ## Displays a description of the different Makefile rules
 	@echo "$(CYAN)★★★ $(PROJECT) Makefile ★★★$(RESET)"
@@ -73,6 +74,10 @@ modules/%.js:
 	
 	
 # === HELPERS =================================================================
+
+rewrite-imports: ## Custom script to convert `require` to `import`
+	@echo "$(GREEN)📝  $@ [REWRITE-IMPORTS]$(RESET)"
+	@find modules/ -name "*.js" | grep -v /umd/ | xargs python3 bin/require-rewrite.py
 
 print-%:
 	@echo $*=
