@@ -55,7 +55,7 @@ help: ## Displays a description of the different Makefile rules
 #
 #  MODULES
 #
-#p
+#
 # -----------------------------------------------------------------------------
 
 modules:
@@ -97,6 +97,9 @@ umd/%.js: $(BUILD_UMD_JS)
 	@cp $(shell echo $(BUILD_UMD_JS) | xargs -n1 echo | grep $@) $@
 	
 # === HELPERS =================================================================
+
+publish:
+	npm publish ./
 
 rewrite-imports: ## Custom script to convert `require` to `import`
 	@echo "$(GREEN)📝  $@ [REWRITE-IMPORTS]$(RESET)"

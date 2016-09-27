@@ -1,6 +1,6 @@
 {
 	"name":"tgd",
-	"version":"0.0.2",
+	"version":"0.0.3",
 	"description":"Toolkit for Generative Design",
 	"keywords": "3D,generative,design,printing",
 	"homepage": "http://github.com/sebastien/tgd.js",
@@ -8,7 +8,14 @@
 	"license":"MIT",
 	"main":"umd/index.js",
 	"author":"Sebastien Pierre <sebastien.pierre@gmai.com",
-	"files":["umd"],
+	"files":[
+		"umd",
+		"umd/cga",
+		"umd/guf",
+		"umd/lpg",
+		"umd/mda",
+		"umd/sps"
+	],
 	"contributors":[
 		"Syed Reza Ali <syed.reza.ali@gmail.com>"
 	],
