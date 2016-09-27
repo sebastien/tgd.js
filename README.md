@@ -1,4 +1,4 @@
-Generative Design Toolkit (gdt.js)
+Toolkit for Generative Design (tgd.js)
 ======================================
 
 This meta-package assembles a set of modules originally created
