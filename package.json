@@ -11,5 +11,9 @@
 	"files":["umd"],
 	"contributors":[
 		"Syed Reza Ali <syed.reza.ali@gmail.com>"
-	]
+	],
+	"dependencies":{
+		"gl-matrix":">=2.3.2",
+		"performance-now":">=0.2.0"
+	}
 }

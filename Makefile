@@ -5,6 +5,7 @@ SUBMODULES_GIT   := $(SUBMODULES:%=%/.git)
 SOURCES_JS       := $(shell find modules/ -name "*.js" | grep -v /umd/)
 SOURCES_INDEX_JS := $(wildcard module/*/index.js)
 BUILD_UMD_JS     := $(shell echo $(SOURCES_JS)   | sed 's|-js/|-js/umd/|g')
+BUILD_SRC_JS     := $(shell echo $(SOURCES_JS) |   sed 's|modules/[a-z]*-js/|src/|g' | xargs -n1 echo | sort | uniq)
 PRODUCT_UMD_JS   := $(shell echo $(BUILD_UMD_JS) | sed 's|modules/[a-z]*-js/||g' | xargs -n1 echo | sort | uniq | grep -v index.js)
 PRODUCT_JS       := $(PRODUCT_UMD_JS) umd/index.js
 
@@ -80,10 +81,15 @@ src/index.js: $(wildcard modules/*/index.js)
 	@echo "$(GREEN)📝  $@ [INDEX]$(RESET)"
 	@cat $^ > $@
 
-umd/index.js: src/index.js
+umd/index.js: src/index.js $(BUILD_SRC_JS)
 	@mkdir -p `dirname $@` ; true
 	@echo "$(GREEN)📝  $@ [INDEX]$(RESET)"
-	@$(BABEL) $@ > $@
+	@$(BABEL) $^ > $@
+
+src/%.js: $(SOURCES_JS)
+	@echo "$(GREEN)📝  $@ [LINK]$(RESET)"
+	@mkdir -p `dirname $@` ; true
+	@ln -sfr $(shell echo $(SOURCES_JS) | xargs -n1 echo | grep $*.js) $@
 
 umd/%.js: $(BUILD_UMD_JS)
 	@echo "$(GREEN)📝  $@ [UMD]$(RESET)"
