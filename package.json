@@ -1,0 +1,15 @@
+{
+	"name":"gdt",
+	"version":"20160927.0",
+	"description":"Generative Design Toolkit",
+	"keywords": "3D,generative,design,printing",
+	"homepage": "http://github.com/sebastien/gdt.js",
+	"repository": "sebastien/gdt.js",
+	"license":"MIT",
+	"main":"umd/index.js",
+	"author":"Sebastien Pierre <sebastien.pierre@gmai.com",
+	"files":["umd"],
+	"contributors":[
+		"Syed Reza Ali <syed.reza.ali@gmail.com>"
+	]
+}

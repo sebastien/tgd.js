@@ -1,9 +1,12 @@
-MODULES_PATH  := modules
-YCAM_MODULES  := mda nsc sps guf lgp cga
-SUBMODULES    := $(YCAM_MODULES:%=modules/%-js)
-SUBMODULES_GIT:= $(SUBMODULES:%=%/.git)
-SOURCES_JS    := $(shell find modules/ -name "*.js" | grep -v /umd/)
-PRODUCT_JS    := $(shell find modules/ -name "*.js" | sed 's|-js/|-js/umd/|g')
+MODULES_PATH     := modules
+YCAM_MODULES     := mda nsc sps guf lgp cga
+SUBMODULES       := $(YCAM_MODULES:%=modules/%-js)
+SUBMODULES_GIT   := $(SUBMODULES:%=%/.git)
+SOURCES_JS       := $(shell find modules/ -name "*.js" | grep -v /umd/)
+SOURCES_INDEX_JS := $(wildcard module/*/index.js)
+BUILD_UMD_JS     := $(shell echo $(SOURCES_JS)   | sed 's|-js/|-js/umd/|g')
+PRODUCT_UMD_JS   := $(shell echo $(BUILD_UMD_JS) | sed 's|modules/[a-z]*-js/||g' | xargs -n1 echo | sort | uniq | grep -v index.js)
+PRODUCT_JS       := $(PRODUCT_UMD_JS) umd/index.js
 
 BUILD_REQ     := $(SUBMODULES_GIT)
 BUILD_FILES   := $(SUBMODULES:%=%/.babelrc) $(PRODUCT_JS)
@@ -65,13 +68,27 @@ modules/%/.babelrc: .babelrc modules/%/.git
 	@echo "$(GREEN)📝  $@ [BABELRC]$(RESET)" 
 	@ln -sfr $< $@
 
-modules/%-js/umd/index.js: modules/%.js/index.js
+modules/%-js/umd/index.js: modules/%-js/index.js
 
 modules/%.js:
 	@echo "$(GREEN)📝  $@ [ES6]$(RESET)"
 	@mkdir -p `dirname $@` ; true
 	@$(BABEL) $(shell echo $@ | sed 's|/umd/|/|g') > $@
 	
+src/index.js: $(wildcard modules/*/index.js)
+	@mkdir -p `dirname $@` ; true
+	@echo "$(GREEN)📝  $@ [INDEX]$(RESET)"
+	@cat $^ > $@
+
+umd/index.js: src/index.js
+	@mkdir -p `dirname $@` ; true
+	@echo "$(GREEN)📝  $@ [INDEX]$(RESET)"
+	@$(BABEL) $@ > $@
+
+umd/%.js: $(BUILD_UMD_JS)
+	@echo "$(GREEN)📝  $@ [UMD]$(RESET)"
+	@mkdir -p `dirname $@` ; true
+	@cp $(shell echo $(BUILD_UMD_JS) | xargs -n1 echo | grep $@) $@
 	
 # === HELPERS =================================================================
 
